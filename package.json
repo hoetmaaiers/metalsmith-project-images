@@ -1,0 +1,31 @@
+{
+  "name": "metalsmith-project-images",
+  "version": "0.0.1",
+  "description": "A metalsmith plugin that scan all images in subfolders and add it to metadata.",
+  "main": "src/index.js",
+  "dependencies": {
+    "debug": "^0.7.4",
+    "lodash": "^3.10.1",
+    "minimatch": "^0.2.14"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoetmaaiers/metalsmith-project-images.git"
+  },
+  "keywords": [
+    "metalsmith",
+    "images",
+    "project",
+    "scan"
+  ],
+  "author": "Robin Houdmeyers",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hoetmaaiers/metalsmith-project-images/issues"
+  },
+  "homepage": "https://github.com/hoetmaaiers/metalsmith-project-images#readme"
+}
