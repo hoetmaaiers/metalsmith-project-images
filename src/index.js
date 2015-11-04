@@ -3,13 +3,11 @@
 var debug = require('debug')('metalsmith-paths'),
     path = require('path'),
     fs = require("fs"),
-    matcher = require('minimatch')
+    matcher = require('minimatch'),
     _ = require('lodash');
 
-/**
- * Expose `plugin`.
- */
 
+// Expose `plugin`.
 module.exports = plugin;
 
 /**
@@ -21,70 +19,70 @@ module.exports = plugin;
  * @return {Function}
  */
 function plugin(options) {
-
+  console.log('OPTIONS', options);
   return function innerFunction(files, metalsmith, done) {
     setImmediate(done);
 
+    // set options
+    options = normalizeOptions(options)
 
-    /*
-     * Defaults
-     */
-    var AUTHORIZED_EXTS = ['jpg', 'jpeg', 'svg', 'png', 'gif', 'JPG', 'JPEG', 'SVG', 'PNG', 'GIF'],
-      PATTERN = '',
-      IMAGES_DIRECTORY = 'images';
+    // get matching files
+    var matchingFiles = getMatchingFiles(files, options.pattern);
 
-    options = options || {};
-    var authorizedExts = options.authorizedExts || AUTHORIZED_EXTS;
-    var imagesDirectory = options.imagesDirectory || IMAGES_DIRECTORY;
-    var pattern = options.pattern || PATTERN;
 
-    var matchingFiles = getMatchingFiles(files, pattern);
-    matchingFiles.forEach(function(file) {
+    _.each(matchingFiles, function(file) {
+      if (_.isUndefined(files[file])) return true;
 
-      var imagesPath = path.join(metalsmith.source(), path.dirname(file), imagesDirectory);
+      var imagesPath = path.join(metalsmith.source(), path.dirname(file), options.imagesDirectory);
+      var dirFiles = fs.readdirSync(imagesPath);
+      files[file].images =  [];
 
-      files[file].images = [];
+      // add files as images metadata
+      _.each(dirFiles, function(dirFile) {
 
-      fs.readdir(imagesPath, function(err, dirFiles) {
-        if (err) return err
-
-        for (var i = 0; i < dirFiles.length; i++) {
-          var dirfile = dirFiles[i];
-
-          // get extension
-          var ext = dirfile.split('.').pop();
-
-          // check extension and remove thumbnails
-          if (authorizedExts.indexOf(ext) != -1) {
-            if (typeof files[file] != 'undefined') {
-              var imagePath = path.join(files[file].path.dir, imagesDirectory, dirfile);
-              files[file].images.push(imagePath);
-            }
-          }
+        // check extension and remove thumbnails
+        if (isAuthorizedFile(dirFile, options.authorizedExts)) {
+          var imagePath = path.join(files[file].path.dir, options.imagesDirectory, dirFile);
+          files[file].images.push(imagePath);
         }
       });
     });
   };
 
+
+  /**
+   * @param {Object} options
+   * @param {Array} authorized extensions - e.g ['jpg', 'png', 'gif']
+   */
+  function normalizeOptions(options) {
+    // define options
+    var defaultOptions = {
+      authorizedExts: ['jpg', 'jpeg', 'svg', 'png', 'gif', 'JPG', 'JPEG', 'SVG', 'PNG', 'GIF'],
+      pattern: '',
+      imagesDirectory: 'images',
+    };
+
+    return _.extend(defaultOptions, options);
+  }
+
+
+  /**
+   * @param {String} file
+   * @param {Array} authorized extensions - e.g ['jpg', 'png', 'gif']
+   */
+  function isAuthorizedFile(file, authorizedExtensions) {
+    // get extension
+    var extension = file.split('.').pop();
+    return _.includes(authorizedExtensions, extension);
+  }
+
+
+
   function getMatchingFiles(files, pattern) {
+    var keys = Object.keys(files);
 
-    return Object.keys(files).filter(function(file) {
-      // parse file path correctly
-      if (path.parse) {
-        files[file].path = path.parse(file)
-      } else {
-
-        // add file path info
-        var extension = path.extension(file)
-
-        // parse manually
-        files[file].path = {
-          base: path.basename(file),
-          dir: path.dirname(file),
-          ext: extension,
-          name: path.basename(file, extension)
-        }
-      }
+    return _.filter(keys, function(file) {
+      files[file].path = path.parse(file);
 
       // check if file is in the right path using regexp
       return matcher(file, pattern);
