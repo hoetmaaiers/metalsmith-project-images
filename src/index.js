@@ -62,6 +62,8 @@ function addImagesToFiles(files, metalsmith, done, options) {
         files[file].images.push(imagePath);
       }
     });
+
+    files[file].images = _.uniq(files[file].images);
   });
 };
 
@@ -77,7 +79,7 @@ function normalizeOptions(options) {
   // define options
   var defaultOptions = {
     authorizedExts: ['jpg', 'jpeg', 'svg', 'png', 'gif', 'JPG', 'JPEG', 'SVG', 'PNG', 'GIF'],
-    pattern: '',
+    pattern: '**/*.md',
     imagesDirectory: 'images',
   };
 

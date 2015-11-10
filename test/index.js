@@ -56,7 +56,7 @@ describe('Metalsmith-images', function() {
           var result = normalizeOptions({});
           expect(result).to.eql({
             authorizedExts: ['jpg', 'jpeg', 'svg', 'png', 'gif', 'JPG', 'JPEG', 'SVG', 'PNG', 'GIF'],
-            pattern: '',
+            pattern: '**/*.md',
             imagesDirectory: 'images',
           });
       });
@@ -76,7 +76,7 @@ describe('Metalsmith-images', function() {
         var updatedOptions = normalizeOptions(options);
         expect(updatedOptions).to.eql({
           authorizedExts: ['tiff'],
-          pattern: '',
+          pattern: '**/*.md',
           imagesDirectory: 'images'
         })
       })
@@ -86,7 +86,7 @@ describe('Metalsmith-images', function() {
         var updatedOptions = normalizeOptions(options);
         expect(updatedOptions).to.eql({
           authorizedExts: ['jpg', 'jpeg', 'svg', 'png', 'gif', 'JPG', 'JPEG', 'SVG', 'PNG', 'GIF'],
-          pattern: '',
+          pattern: '**/*.md',
           imagesDirectory: 'imgs'
         })
       })
@@ -162,7 +162,7 @@ describe('Metalsmith-images', function() {
           if (err) return done(err);
 
           var filesWithImages = getFilesWithImages(files)
-
+          console.log(filesWithImages);
           expect(filesWithImages).to.deep.include.members([
             { 'one/one.md': [ 'one/images/Toadle.gif', 'one/images/Toadle.png' ] },
             { 'projects/hello/world.md': [ 'projects/hello/images/Toadle.gif', 'projects/hello/images/Toadle.png' ] }
