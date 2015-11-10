@@ -8,9 +8,15 @@
     "lodash": "^3.10.1",
     "minimatch": "^0.2.14"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "chai": "^3.4.0",
+    "metalsmith": "^2.1.0",
+    "minimatch": "^0.2.14",
+    "mocha": "^2.3.3"
+  },
   "scripts": {
-    "test": "npm test"
+    "test": "mocha --harmony --reporter spec test/index.js --compilers js:babel-core/register",
+    "test:watch": "npm run test -- --watch"
   },
   "repository": {
     "type": "git",
