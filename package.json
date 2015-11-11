@@ -9,6 +9,7 @@
     "minimatch": "^0.2.14"
   },
   "devDependencies": {
+    "babel-core": "^6.1.4",
     "chai": "^3.4.0",
     "metalsmith": "^2.1.0",
     "minimatch": "^0.2.14",
