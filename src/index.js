@@ -26,13 +26,13 @@ function plugin(options) {
   return function innerFunction(files, metalsmith, done) {
     setImmediate(done);
 
+    // one options object
     if (_.isObject(options)) {
-        console.log('ONE OPTION');
         addImagesToFiles(files, metalsmith, done, options);
     }
 
+    // multiple options objects
     if (_.isArray(options)) {
-        console.log('MULTIPLE OPTIONS');
         _.each(options, (optionsItem) => {
           addImagesToFiles(files, metalsmith, done, optionsItem);
         })
