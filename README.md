@@ -1,6 +1,50 @@
 # Metalsmith Project Images
 
-A metalsmith plugin that scan all images in subfolders and add it to metadata.
+A metalsmith plugin that can scan all images in subfolders and add it to a files metadata.
+
+## The idea
+
+Let's say we want to show all images per project. Assume we have a folder structure like below:
+
+```
+projects/
+|-- hello/
+|	|-- hello.md
+|	|-- images/
+|		|-- image-1.png
+|		|-- image-2.png
+|-- world/
+	|-- world.md
+	|-- images/
+		|-- beautiful-world.png
+		|-- skyfall.jpg
+```
+
+This would be possible with the following configuration:
+
+```
+var Metalsmith = require('metalsmith');
+var images = require('metalsmith-project-images');
+
+var metalsmith = new Metalsmith(__dirname)
+  .use(images({
+    pattern: 'projects/**/*.md'
+  })
+  .build();
+```
+
+Combined with the [collections metalsmith plugin](https://github.com/segmentio/metalsmith-collections), we can loop over each collection and have access to the images for each project.
+
+```javascript
+{{#each project in projects}}
+	<h1>{{project.title}}</h1>
+	<ul>
+		{{#each image in project.images}}
+			<li><img src="{{image}}"/></li>
+		{{/each}}
+	</ul>
+{{/each}}
+```
 
 ## Install
 
@@ -17,7 +61,8 @@ var images = require('metalsmith-project-images');
 var metalsmith = new Metalsmith(__dirname)
   .use(images({
   	pattern: 'projects/**/*'
-  });
+  })
+  .build();
 ```
 
 ## Api
@@ -67,7 +112,10 @@ var options = [
 ### Options
 
 | name | default | description |
-| ------------- |:-------------|:-:|
-| pattern | `**/*.md` | ...|
-| authorizedExts | jpg, jpeg, svg, png, gif, JPG, JPEG, SVG, PNG, GIF | ... |
-| imagesDirectory | `images` | ... |
+|:------------- |:-------------|:--|
+| pattern | `**/*.md` | pattern for files to scan images for |
+| authorizedExts | jpg, jpeg, svg, png, gif, JPG, JPEG, SVG, PNG, GIF | allowed image extensions |
+| imagesDirectory | `images` | directory inside the pattern to look for images to add |
+
+## License
+MIT
