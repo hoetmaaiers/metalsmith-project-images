@@ -33,7 +33,7 @@ function plugin(options) {
 
     // multiple options objects
     if (_.isArray(options)) {
-        _.each(options, (optionsItem) => {
+        _.each(options, function(optionsItem) {
           addImagesToFiles(files, metalsmith, done, optionsItem);
         })
     }
