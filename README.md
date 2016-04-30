@@ -63,7 +63,7 @@ var images = require('metalsmith-project-images');
 var metalsmith = new Metalsmith(__dirname)
   .use(images({
   	pattern: 'projects/**/*'
-  })
+  }))
   .build();
 ```
 
