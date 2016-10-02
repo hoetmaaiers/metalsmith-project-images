@@ -52,18 +52,18 @@ function addImagesToFiles(files, metalsmith, done, options) {
 
     var imagesPath = path.join(metalsmith.source(), path.dirname(file), options.imagesDirectory);
     var dirFiles = fs.readdirSync(imagesPath);
-    files[file].images = files[file].images || [];
+    files[file][options.imagesKey] = files[file][options.imagesKey] || [];
 
     // add files as images metadata
     _.each(dirFiles, function(dirFile) {
       // check extension and remove thumbnails
       if (isAuthorizedFile(dirFile, options.authorizedExts)) {
         var imagePath = path.join(files[file].path.dir, options.imagesDirectory, dirFile);
-        files[file].images.push(imagePath);
+        files[file][options.imagesKey].push(imagePath);
       }
     });
 
-    files[file].images = _.uniq(files[file].images);
+    files[file][options.imagesKey] = _.uniq(files[file][options.imagesKey]);
   });
 };
 
@@ -81,6 +81,7 @@ function normalizeOptions(options) {
     authorizedExts: ['jpg', 'jpeg', 'svg', 'png', 'gif', 'JPG', 'JPEG', 'SVG', 'PNG', 'GIF'],
     pattern: '**/*.md',
     imagesDirectory: 'images',
+    imagesKey: 'images',
   };
 
   return _.extend(defaultOptions, options);
