@@ -9,11 +9,12 @@ var _ = require('lodash'),
     getMatchingFiles = images.getMatchingFiles,
     isAuthorizedFile = images.isAuthorizedFile;
 
-function getFilesWithImages(files) {
+function getFilesWithImages(files, imagesKey) {
+  imagesKey = imagesKey || 'images';
   return _.chain(files)
     .map(function(file, index, files) {
       var obj = {}
-      obj[index] = file.images;
+      obj[index] = file[imagesKey];
       return obj
     })
     .filter(function(file, index, files) {
@@ -130,6 +131,25 @@ describe('Metalsmith-images', function() {
           if (err) return done(err);
           // console.log('FILES', files);
           var filesWithImages = getFilesWithImages(files);
+
+          expect(filesWithImages).to.deep.include.members([
+            { 'one/one.md': [ 'one/images/Toadle.gif', 'one/images/Toadle.png' ] },
+            { 'three/three.md': [ 'three/images/listen.png', 'three/images/now.png' ] },
+            { 'two/two.md': [ 'two/images/Toad.png' ] }
+          ])
+
+          done();
+        });
+    });
+
+    it('should add images to specified metadata key of matching files', function(done){
+      var metalsmith = Metalsmith('test/fixtures/pattern');
+      metalsmith
+        .use(images({ pattern: '**/*.md', imagesKey: 'maps' }))
+        .build(function(err, files){
+          if (err) return done(err);
+          // console.log('FILES', files);
+          var filesWithImages = getFilesWithImages(files, 'maps');
 
           expect(filesWithImages).to.deep.include.members([
             { 'one/one.md': [ 'one/images/Toadle.gif', 'one/images/Toadle.png' ] },
