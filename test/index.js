@@ -58,6 +58,7 @@ describe('Metalsmith-images', function() {
             authorizedExts: ['jpg', 'jpeg', 'svg', 'png', 'gif', 'JPG', 'JPEG', 'SVG', 'PNG', 'GIF'],
             pattern: '**/*.md',
             imagesDirectory: 'images',
+            imagesKey: 'images',
           });
       });
 
@@ -67,7 +68,8 @@ describe('Metalsmith-images', function() {
         expect(updatedOptions).to.eql({
           authorizedExts: ['jpg', 'jpeg', 'svg', 'png', 'gif', 'JPG', 'JPEG', 'SVG', 'PNG', 'GIF'],
           pattern: 'test/*.md',
-          imagesDirectory: 'images'
+          imagesDirectory: 'images',
+          imagesKey: 'images',
         });
       })
 
@@ -77,7 +79,8 @@ describe('Metalsmith-images', function() {
         expect(updatedOptions).to.eql({
           authorizedExts: ['tiff'],
           pattern: '**/*.md',
-          imagesDirectory: 'images'
+          imagesDirectory: 'images',
+          imagesKey: 'images',
         })
       })
 
@@ -87,7 +90,8 @@ describe('Metalsmith-images', function() {
         expect(updatedOptions).to.eql({
           authorizedExts: ['jpg', 'jpeg', 'svg', 'png', 'gif', 'JPG', 'JPEG', 'SVG', 'PNG', 'GIF'],
           pattern: '**/*.md',
-          imagesDirectory: 'imgs'
+          imagesDirectory: 'imgs',
+          imagesKey: 'images',
         })
       })
     });
