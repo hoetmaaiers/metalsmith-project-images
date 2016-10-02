@@ -108,6 +108,13 @@ var options = [
 	{
 		pattern: 'projects/**/*.md',
 	},
+
+	// add all images to its matching project with a different metadata key
+	{
+		pattern: 'projects/**/*.md',
+        imagesDirectory: 'maps',
+        imagesKey: 'maps',
+	},
 ]
 ```
 
@@ -118,6 +125,7 @@ var options = [
 | pattern | `**/*.md` | pattern for files to scan images for |
 | authorizedExts | jpg, jpeg, svg, png, gif, JPG, JPEG, SVG, PNG, GIF | allowed image extensions |
 | imagesDirectory | `images` | directory inside the pattern to look for images to add |
+| imagesKey | `images` | name of metadata key to hold images collection |
 
 ## License
 MIT
