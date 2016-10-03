@@ -1,5 +1,6 @@
 # Metalsmith Project Images
 
+[![npm version](https://badge.fury.io/js/metalsmith-project-images.svg)](https://badge.fury.io/js/metalsmith-project-images)
 [![Build Status](https://travis-ci.org/hoetmaaiers/metalsmith-project-images.svg?branch=master)](https://travis-ci.org/hoetmaaiers/metalsmith-project-images)
 
 A metalsmith plugin that can scan all images in subfolders and add it to a files metadata.
