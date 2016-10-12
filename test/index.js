@@ -161,7 +161,7 @@ describe('Metalsmith-images', function() {
         });
     });
 
-    it('should add images mathing the authorizedExts', function(done){
+    it('should add images matching the authorizedExts', function(done){
       var metalsmith = Metalsmith('test/fixtures/pattern');
       metalsmith
         .use(images({ pattern: '**/*.md', authorizedExts: ['gif'] }))
