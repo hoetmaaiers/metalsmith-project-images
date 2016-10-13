@@ -26,7 +26,7 @@ function plugin(options) {
 return function innerFunction(files, metalsmith, done) {
   setImmediate(done);
 
-  // sane deafult
+  // sane default
   var optionsArray = [];
 
   if (_.isArray(options)) {
