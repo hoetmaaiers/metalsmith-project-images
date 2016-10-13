@@ -23,22 +23,20 @@ module.exports.getMatchingFiles = getMatchingFiles;
  */
 function plugin(options) {
 
-return function innerFunction(files, metalsmith, done) {
-  setImmediate(done);
+  return function innerFunction(files, metalsmith, done) {
+    setImmediate(done);
 
-  // sane default
-  var optionsArray = [];
-
-  if (_.isArray(options)) {
-    // multiple options objects
-    optionsArray = options;
-  } else if (_.isObject(options)) {
     // one options object
-    optionsArray = [options];
-  }
-  _.each(optionsArray, function(optionsItem) {
-    addImagesToFiles(files, metalsmith, done, optionsItem);
-  })
+    if (_.isObject(options)) {
+        addImagesToFiles(files, metalsmith, done, options);
+    }
+
+    // multiple options objects
+    if (_.isArray(options)) {
+        _.each(options, function(optionsItem) {
+          addImagesToFiles(files, metalsmith, done, optionsItem);
+        })
+    }
 }
 
 function addImagesToFiles(files, metalsmith, done, options) {
