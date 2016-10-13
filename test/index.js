@@ -186,7 +186,7 @@ describe('Metalsmith-images', function() {
           if (err) return done(err);
 
           var filesWithImages = getFilesWithImages(files)
-          // console.log(filesWithImages);
+
           expect(filesWithImages).to.deep.include.members([
             { 'one/one.md': [ 'one/images/Toadle.gif', 'one/images/Toadle.png' ] },
             { 'projects/hello/world.md': [ 'projects/hello/images/Toadle.gif', 'projects/hello/images/Toadle.png' ] }
