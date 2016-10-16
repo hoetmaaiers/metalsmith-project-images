@@ -52,7 +52,10 @@ function addImagesToFiles(files, metalsmith, done, options) {
     if (_.isUndefined(files[file])) return true;
 
     var imagesPath = path.join(metalsmith.source(), path.dirname(file), options.imagesDirectory);
-    try {
+    fs.exists(imagesPath, function(exist) {
+      // no access, skip the path
+      if (!exist) return;
+
       var dirFiles = fs.readdirSync(imagesPath);
       files[file][options.imagesKey] = files[file][options.imagesKey] || [];
 
@@ -66,9 +69,7 @@ function addImagesToFiles(files, metalsmith, done, options) {
       });
 
       files[file][options.imagesKey] = _.uniq(files[file][options.imagesKey]);
-    } catch (e) {
-      // image files not found in directory
-    }
+    });
   });
 };
 
