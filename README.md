@@ -128,5 +128,9 @@ var options = [
 | imagesDirectory | `images` | directory inside the pattern to look for images to add |
 | imagesKey | `images` | name of metadata key to hold images collection |
 
+Note:
+
+- If `imagesDirectory` does not exist, it is skipped and no collection will be created
+
 ## License
 MIT

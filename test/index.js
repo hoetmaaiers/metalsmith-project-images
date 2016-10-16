@@ -142,6 +142,23 @@ describe('Metalsmith-images', function() {
         });
     });
 
+    it('should not add images to metadata without matching directories', function(done){
+      var metalsmith = Metalsmith('test/fixtures/pattern');
+      metalsmith
+        .use(images({ pattern: '**/*.md' }))
+        .build(function(err, files){
+          if (err) return done(err);
+          // console.log('FILES', files);
+          var filesWithImages = getFilesWithImages(files);
+
+          expect(filesWithImages).to.not.deep.include.members([
+            { 'four/four.md': [] },
+          ])
+
+          done();
+        });
+    });
+
     it('should add images to specified metadata key of matching files', function(done){
       var metalsmith = Metalsmith('test/fixtures/pattern');
       metalsmith
@@ -161,7 +178,7 @@ describe('Metalsmith-images', function() {
         });
     });
 
-    it('should add images mathing the authorizedExts', function(done){
+    it('should add images matching the authorizedExts', function(done){
       var metalsmith = Metalsmith('test/fixtures/pattern');
       metalsmith
         .use(images({ pattern: '**/*.md', authorizedExts: ['gif'] }))
