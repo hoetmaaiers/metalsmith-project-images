@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-project-images",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A metalsmith plugin that scan all images in subfolders and add it to metadata.",
   "main": "src/index.js",
   "dependencies": {
