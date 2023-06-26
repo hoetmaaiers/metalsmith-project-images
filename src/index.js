@@ -1,6 +1,6 @@
 'use strict';
 
-var debug = require('debug')('metalsmith-paths'),
+var debug = require('debug')('metalsmith-project-images'),
     path = require('path'),
     fs = require("fs"),
     matcher = require('minimatch'),
@@ -17,7 +17,7 @@ module.exports.getMatchingFiles = getMatchingFiles;
  *
  * @param {Object} options
  *   @property {String} pattern
- *   @property {String} imagesDirectory - directory in which we will go looking for images
+ *   @property {String | function} imagesDirectory - directory in which we will go looking for images
  *   @property {String} authorizedExts - images authorized image extensions
  * @return {Function}
  */
@@ -51,7 +51,16 @@ function addImagesToFiles(files, metalsmith, done, options) {
   _.each(matchingFiles, function(file) {
     if (_.isUndefined(files[file])) return true;
 
-    var imagesPath = path.join(metalsmith.source(), path.dirname(file), options.imagesDirectory);
+    debug('processing ' + file);
+
+    var imagesDirectory = options.imagesDirectory;
+    if (typeof imagesDirectory === "function") {
+    	imagesDirectory = imagesDirectory(file);
+    }
+
+
+    var imagesPath = path.join(metalsmith.source(), path.dirname(file), imagesDirectory);
+    debug('searching for images in ' + imagesPath);
     var exist = fs.existsSync(imagesPath);
     // no access, skip the path
     if (!exist) return;
@@ -63,7 +72,10 @@ function addImagesToFiles(files, metalsmith, done, options) {
     _.each(dirFiles, function(dirFile) {
       // check extension and remove thumbnails
       if (isAuthorizedFile(dirFile, options.authorizedExts)) {
-        var imagePath = path.join(files[file].path.dir, options.imagesDirectory, dirFile);
+        var filePath = path.parse(file);
+
+        var imagePath = path.join(filePath.dir, imagesDirectory, dirFile);
+        debug('add image ' + imagePath);
         files[file][options.imagesKey].push(imagePath);
       }
     });
@@ -114,8 +126,6 @@ function getMatchingFiles(files, pattern) {
   var keys = Object.keys(files);
 
   return _.filter(keys, function(file) {
-    files[file].path = path.parse(file);
-
     // check if file is in the right path using regexp
     return matcher(file, pattern);
   });
