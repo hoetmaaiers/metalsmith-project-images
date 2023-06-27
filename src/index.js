@@ -55,7 +55,7 @@ function addImagesToFiles(files, metalsmith, done, options) {
 
     var imagesDirectory = options.imagesDirectory;
     if (typeof imagesDirectory === "function") {
-    	imagesDirectory = imagesDirectory(file);
+    	imagesDirectory = imagesDirectory(file, files[file]);
     }
 
 
